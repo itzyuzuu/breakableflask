@@ -4,16 +4,18 @@ jobs:
   Dependances:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - name: Dependances
         run: |
-          echo "ecrire ici le scrypt de contrôle des dépendances"
+          echo "docker run --rm -v "$PWD:/src" aquasec/trivy:0.74.0 fs --scanners vuln --severity HIGH,CRITICAL --exit-code 1 /src/requirements.txt"
   Dockerfile:
     runs-on: ubuntu-latest
     needs: Dependances
     steps:
+      - uses: actions/checkout@v4
       - name: Test Dockerfile
         run: |
-          echo "ecrire ici le scrypt de contrôle du Dockerfile"
+          echo "docker run --rm -v "$PWD:/src" aquasec/trivy:0.74.0 config --severity HIGH,CRITICAL --exit-code 1 /src"
   Deploy:
     runs-on: ubuntu-latest
     needs: Dockerfile
